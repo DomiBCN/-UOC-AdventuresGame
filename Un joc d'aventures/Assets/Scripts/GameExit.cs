@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameExit : MonoBehaviour {
+public class GameExit : MonoBehaviour
+{
 
-	public void SalirJuego()
+    public void SalirJuego()
     {
         Debug.Log("Saliendo del juego...");
         Application.Quit();

@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/PantallaInicial.unity
+- path: Assets/Scenes/PartidaNueva.unity
   isLoaded: 1
   isActive: 1
