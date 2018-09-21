@@ -29,17 +29,22 @@ public class GamePlayManager : MonoBehaviour
 
     void answerSelected(int index)
     {
-        print(index);
-        historyText.text += "\n" + current.answers[index];
+        historyText.text += "\n<b>" + current.answers[index] + "</b>";
 
         if (!current.isFinal)
         {
             current = current.nextNode[index];
+            //mirem si en aquest node tenim mètode delegat assignat
+            if (current.nodeVisited != null)
+            {
+                //executem el mètode delegat que en aquest cas reemplaçarà el node
+                current.nodeVisited();
+            }
             FillUI();
         }
         else
         {
-            //final del juego
+            //final del joc
         }
     }
 
@@ -51,28 +56,29 @@ public class GamePlayManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
-        bool isLeft = true;
-        float height = 50;
+        
+        float height = 80;
         int index = 0;
 
         foreach (string answer in current.answers)
         {
             GameObject buttonAnswerCopy = Instantiate(buttonAnswer);
-            buttonAnswerCopy.transform.parent = answerParent;
+            buttonAnswerCopy.transform.SetParent(answerParent);
             float x = buttonAnswerCopy.GetComponent<RectTransform>().rect.x * 1.1f;
-            buttonAnswerCopy.GetComponent<RectTransform>().localPosition = new Vector3(isLeft ? x : -x, height, 0);
+            buttonAnswerCopy.GetComponent<RectTransform>().localPosition = new Vector3(x, height, 0);
 
-            if (!isLeft)
-            {
-                height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 2.5f;
+            height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 2.5f;
+            
+            //if (!isLeft)
+            //{
+            //height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 2.5f;
 
-                isLeft = !isLeft;
-                FillListener(buttonAnswerCopy.GetComponent<Button>(), index);
-                buttonAnswerCopy.GetComponentInChildren<Text>().text = answer;
+            //isLeft = !isLeft;
+            FillListener(buttonAnswerCopy.GetComponent<Button>(), index);
+            buttonAnswerCopy.GetComponentInChildren<Text>().text = answer;
 
-                index++;
-            }
+            index++;
+            //}
         }
     }
 

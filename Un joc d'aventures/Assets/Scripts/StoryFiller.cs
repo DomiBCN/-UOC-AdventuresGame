@@ -20,7 +20,7 @@ public class StoryFiller : MonoBehaviour
     {
         GamePlayManager.StoryNode root = CreateNode("Te encuentras en una habitación y no recuerdas nada. Quieres salir.", new string[] { "Explorar objetos", "Explorar la habitación" });
 
-        GamePlayManager.StoryNode node1 = CreateNode("Hay una silla y una mesa con una planta a la izquierda. A la derecha hay una estanteria con libros. Detrás parece que hay unas cajas.", new string[] { "Ir a la derecha", "Ir a la izquierda", "Ir hacia atrás", "Explorarr habitación" });
+        GamePlayManager.StoryNode node1 = CreateNode("Hay una silla y una mesa con una planta a la izquierda. A la derecha hay una estanteria con libros. Detrás parece que hay unas cajas.", new string[] { "Ir a la derecha", "Ir a la izquierda", "Ir hacia atrás", "Explorar habitación" });
         root.nextNode[0] = node1;
 
         GamePlayManager.StoryNode node2 = CreateNode("Nada interesnte... aunque hay un libro que llama la atención... botánica para astronautas?", new string[] { "Explorar el resto de objetos de la habitación", "Averiguar más del libro raro" });
@@ -56,7 +56,7 @@ public class StoryFiller : MonoBehaviour
         node6bis.nextNode[1] = node8;
 
         GamePlayManager.StoryNode node9 = CreateNode("La habitación tiene un par de ventanas y una puerta", new string[] { "Ir a la ventana #1", "Ir a la ventana #2", "Ir a la puerta" });
-        root.nextNode[1] = node1.nextNode[0] = node8.nextNode[0] = node9;
+        root.nextNode[1] = node1.nextNode[3] = node8.nextNode[0] = node9;
 
         GamePlayManager.StoryNode node10 = CreateNode("La ventana está tapiada, no se puede abrir", new string[] { "Ir a la otra ventana", "Ir a la puerta" });
         node9.nextNode[0] = node9.nextNode[1] = node10;
