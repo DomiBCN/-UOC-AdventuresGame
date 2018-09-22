@@ -166,3 +166,6 @@ C:\Users\domi\Documents\UOC\Projects\AdventuresGame\Un joc d'aventures\obj\Debug
 C:\Users\domi\Documents\UOC\Projects\AdventuresGame\Un joc d'aventures\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\domi\Documents\UOC\Projects\AdventuresGame\Un joc d'aventures\obj\Debug\Assembly-CSharp.dll
 C:\Users\domi\Documents\UOC\Projects\AdventuresGame\Un joc d'aventures\obj\Debug\Assembly-CSharp.pdb
+C:\Users\domi\Documents\UOC\Projects\AdventuresGame\Un joc d'aventures\Temp\bin\Debug\UnityEngine.SpatialTrackingModule.dll
+C:\Users\domi\Documents\UOC\Projects\AdventuresGame\Un joc d'aventures\Temp\bin\Debug\UnityEngine.WebGLModule.dll
+C:\Users\domi\Documents\UOC\Projects\AdventuresGame\Un joc d'aventures\Temp\bin\Debug\UnityEngine.SpatialTrackingModule.xml

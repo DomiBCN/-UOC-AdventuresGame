@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GamePlayManager : MonoBehaviour
@@ -13,23 +14,54 @@ public class GamePlayManager : MonoBehaviour
         public bool isFinal = false;
         public delegate void NodeVisited();
         public NodeVisited nodeVisited;
+        public ItemsEnum.Items item;
     }
 
     public Text historyText;
     public Transform answerParent;
+    public Transform inventoryParent;
     public GameObject buttonAnswer;
+    public GameObject inventoryPrefab;
+    public GameObject pauseMenu;
+    public GameObject blurryEffect;
+    public Sprite key;
+    public Sprite scissors;
+    public Sprite book;
     private StoryNode current;
+    private bool gameOver;
+    private float itemHeight = 225;
+
+    private List<ItemsEnum.Items> currentItems = new List<ItemsEnum.Items>();
 
     private void Start()
     {
+        gameOver = false;
         current = StoryFiller.FillStory();
         historyText.text = string.Empty;
+        foreach (Transform child in inventoryParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
         FillUI();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape) && !gameOver)
+        {
+            UpdateGameMenu();
+        }
+    }
+
+    void UpdateGameMenu()
+    {
+        pauseMenu.SetActive(!pauseMenu.activeSelf);
+        blurryEffect.SetActive(!blurryEffect.activeSelf);
     }
 
     void answerSelected(int index)
     {
-        historyText.text += "\n<b>" + current.answers[index] + "</b>";
+        historyText.text += "\n" + current.answers[index];
 
         if (!current.isFinal)
         {
@@ -40,11 +72,27 @@ public class GamePlayManager : MonoBehaviour
                 //executem el mètode delegat que en aquest cas reemplaçarà el node
                 current.nodeVisited();
             }
+
+            //si el item no es el default i encara no el tenim, l'afegim a l'inventari
+            if(current.item != ItemsEnum.Items.DEFAULT && !currentItems.Contains(current.item))
+            {
+                GetItem(current.item);
+            }
+
             FillUI();
         }
         else
         {
             //final del joc
+            gameOver = true;
+            UpdateGameMenu();
+            //modifiquem el titol de "Pausa" a "GameOver"
+            GameObject popUpTitle = GameObject.FindGameObjectWithTag("pauseTitle");
+            if (popUpTitle != null)
+            {
+                popUpTitle.GetComponent<Text>().text = "GameOver";
+
+            }
         }
     }
 
@@ -56,8 +104,8 @@ public class GamePlayManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        
-        float height = 80;
+
+        float height = 90;
         int index = 0;
 
         foreach (string answer in current.answers)
@@ -67,16 +115,17 @@ public class GamePlayManager : MonoBehaviour
             float x = buttonAnswerCopy.GetComponent<RectTransform>().rect.x * 1.1f;
             buttonAnswerCopy.GetComponent<RectTransform>().localPosition = new Vector3(x, height, 0);
 
-            height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 2.5f;
-            
+            height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 3f;
+
+            buttonAnswerCopy.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+
             //if (!isLeft)
             //{
             //height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 2.5f;
 
             //isLeft = !isLeft;
-            FillListener(buttonAnswerCopy.GetComponent<Button>(), index);
+            FillListener(buttonAnswerCopy.GetComponentInChildren<Button>(), index);
             buttonAnswerCopy.GetComponentInChildren<Text>().text = answer;
-
             index++;
             //}
         }
@@ -88,5 +137,30 @@ public class GamePlayManager : MonoBehaviour
         {
             answerSelected(index);
         });
+    }
+
+    public void GetItem(ItemsEnum.Items item)
+    {
+        GameObject itemCopy = Instantiate(inventoryPrefab);
+        itemCopy.transform.SetParent(inventoryParent);
+        float x = 0;// itemCopy.GetComponent<RectTransform>().rect.x * 1.1f;
+        itemCopy.GetComponent<RectTransform>().localPosition = new Vector3(x, itemHeight, 0);
+
+        itemHeight += itemCopy.GetComponent<RectTransform>().rect.y * 6f;
+
+        switch (item)
+        {
+            case ItemsEnum.Items.KEY:
+                itemCopy.GetComponent<Image>().sprite = key;
+                break;
+            case ItemsEnum.Items.SCISSORS:
+                itemCopy.GetComponent<Image>().sprite = scissors;
+                break;
+            case ItemsEnum.Items.BOOK:
+                itemCopy.GetComponent<Image>().sprite = book;
+                break;
+            default:
+                break;
+        }
     }
 }

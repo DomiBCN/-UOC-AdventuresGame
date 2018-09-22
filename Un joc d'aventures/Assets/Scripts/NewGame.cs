@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class NewGame : MonoBehaviour {
 
-	public void CargarPartidaNueva()
+    public void CargarPartidaNueva()
     {
         SceneManager.LoadScene("PartidaNueva");
     }
