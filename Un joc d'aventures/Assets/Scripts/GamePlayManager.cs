@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -77,6 +78,7 @@ public class GamePlayManager : MonoBehaviour
             if(current.item != ItemsEnum.Items.DEFAULT && !currentItems.Contains(current.item))
             {
                 GetItem(current.item);
+                currentItems.Add(current.item);
             }
 
             FillUI();
@@ -105,7 +107,8 @@ public class GamePlayManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        float height = 90;
+        bool isLeft = true;
+        float height = 35;
         int index = 0;
 
         foreach (string answer in current.answers)
@@ -113,21 +116,19 @@ public class GamePlayManager : MonoBehaviour
             GameObject buttonAnswerCopy = Instantiate(buttonAnswer);
             buttonAnswerCopy.transform.SetParent(answerParent);
             float x = buttonAnswerCopy.GetComponent<RectTransform>().rect.x * 1.1f;
-            buttonAnswerCopy.GetComponent<RectTransform>().localPosition = new Vector3(x, height, 0);
+            buttonAnswerCopy.GetComponent<RectTransform>().localPosition = new Vector3(isLeft ? x : -x, height, 0);
 
-            height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 3f;
-
+            if (!isLeft)
+            {
+                height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 3f;
+            }
+            
             buttonAnswerCopy.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
 
-            //if (!isLeft)
-            //{
-            //height += buttonAnswerCopy.GetComponent<RectTransform>().rect.y * 2.5f;
-
-            //isLeft = !isLeft;
+            isLeft = !isLeft;
             FillListener(buttonAnswerCopy.GetComponentInChildren<Button>(), index);
             buttonAnswerCopy.GetComponentInChildren<Text>().text = answer;
             index++;
-            //}
         }
     }
 
@@ -146,18 +147,22 @@ public class GamePlayManager : MonoBehaviour
         float x = 0;// itemCopy.GetComponent<RectTransform>().rect.x * 1.1f;
         itemCopy.GetComponent<RectTransform>().localPosition = new Vector3(x, itemHeight, 0);
 
-        itemHeight += itemCopy.GetComponent<RectTransform>().rect.y * 6f;
+        itemHeight += itemCopy.GetComponent<RectTransform>().rect.y * 3f;
+
+        Image[] images = itemCopy.GetComponentsInChildren<Image>();
+
+        Image imgComponent = images.Where(i => i.name == "ImageInventory").FirstOrDefault();
 
         switch (item)
         {
             case ItemsEnum.Items.KEY:
-                itemCopy.GetComponent<Image>().sprite = key;
+                imgComponent.sprite = key;
                 break;
             case ItemsEnum.Items.SCISSORS:
-                itemCopy.GetComponent<Image>().sprite = scissors;
+                imgComponent.sprite = scissors;
                 break;
             case ItemsEnum.Items.BOOK:
-                itemCopy.GetComponent<Image>().sprite = book;
+                imgComponent.sprite = book;
                 break;
             default:
                 break;

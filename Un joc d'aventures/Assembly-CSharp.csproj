@@ -65,6 +65,8 @@
     <Compile Include="Assets\Scripts\GameMenu.cs" />
     <Compile Include="Assets\Scripts\GamePlayManager.cs" />
     <Compile Include="Assets\Scripts\ItemsEnum.cs" />
+    <Compile Include="Assets\Scripts\Music.cs" />
+    <Compile Include="Assets\Scripts\MuteScript.cs" />
     <Compile Include="Assets\Scripts\NewGame.cs" />
     <Compile Include="Assets\Scripts\StoryFiller.cs" />
     <Reference Include="UnityEditor.StandardEvents">
